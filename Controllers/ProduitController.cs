@@ -22,14 +22,14 @@ namespace FilterDemoApp.Controllers
             _logger = logger;
         }
         [HttpPost]
-        public JsonResult Create(Produit produit)
+        public JsonResult Post([FromBody] Produit produit)
         {
             _logger.LogInformation("{0}", JsonSerializer.Serialize(produit));
             return new JsonResult(produit);
         }
         [HttpPut("{id:int}")]
         // [ClaimRequirement(MyClaimTypes.Permission, "CanReadResource")]
-        public IActionResult Edit(string id, Produit produit)
+        public IActionResult Put([FromRoute]string id,[FromBody] Produit produit)
         {
                   if(!ModelState.IsValid)return BadRequest(produit);
             _logger.LogInformation("{0}", id);
@@ -45,9 +45,13 @@ namespace FilterDemoApp.Controllers
         }
         [HttpGet]
         // [AuthorFilter("Author", "Jason Mandabrandja")] First
-        public IEnumerable<Produit> Get()
-        =>
-            new List<Produit>();
+        public IActionResult Get()
+        => NoContent();
+
+        [HttpGet("gets")]
+        public IActionResult Get([FromQuery]int id){
+            return new JsonResult(new {id=id});
+        }
 
     }
 }
