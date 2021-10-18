@@ -30,9 +30,11 @@ namespace FilterDemoApp
 
             //Second
             services.AddScoped<AuthorFilter>();
+            services.AddSingleton<HttpsFilter>();
 
             services.AddControllers(options=>{
                 options.Filters.Add<AuthorFilter>();
+                 options.Filters.Add(typeof(HttpsFilter));
                 //  options.Filters.Add(typeof(AuthorFilter));
             });
             //Second

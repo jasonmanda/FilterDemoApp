@@ -28,9 +28,10 @@ namespace FilterDemoApp.Controllers
             return new JsonResult(produit);
         }
         [HttpPut("{id:int}")]
-        public JsonResult Edit(string id, Produit produit)
+        // [ClaimRequirement(MyClaimTypes.Permission, "CanReadResource")]
+        public IActionResult Edit(string id, Produit produit)
         {
-
+                  if(!ModelState.IsValid)return BadRequest(produit);
             _logger.LogInformation("{0}", id);
             _logger.LogInformation("{0}", JsonSerializer.Serialize(produit));
             return new JsonResult(produit);
