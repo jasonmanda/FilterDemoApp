@@ -32,10 +32,12 @@ namespace FilterDemoApp
             services.AddScoped<AuthorFilter>();
             services.AddSingleton<HttpsFilter>();
 
-            services.AddControllers(options=>{
+            services.AddControllers(options =>
+            {
                 options.Filters.Add<AuthorFilter>();
-                 options.Filters.Add(typeof(HttpsFilter));
+                options.Filters.Add(typeof(HttpsFilter));
                 //  options.Filters.Add(typeof(AuthorFilter));
+                //  options.Filters.Add(new AuthorFilter());
             });
             //Second
             services.AddSwaggerGen(c =>
