@@ -27,7 +27,14 @@ namespace FilterDemoApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(options=>{
+                options.RequireAuthenticatedSignIn=true;
+            });
+            services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy => policy.RequireClaim("Admin"));
 
+});
             //Second
             services.AddScoped<AuthorFilter>();
             services.AddSingleton<HttpsFilter>();
