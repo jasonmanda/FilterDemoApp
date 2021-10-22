@@ -15,6 +15,9 @@ using FilterDemoApp.Filters;
 using FilterDemoApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace FilterDemoApp
 {
@@ -55,16 +58,31 @@ namespace FilterDemoApp
                        options.UseSqlite(
                            Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+        .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddAuthentication(options =>
             {
-                options.RequireAuthenticatedSignIn = true;
+                // options.RequireAuthenticatedSignIn = true;
             });
+                      services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+         {
+             options.TokenValidationParameters = new TokenValidationParameters
+             {
+                 ValidateIssuer = true,
+                 ValidateAudience = true,
+                 ValidateLifetime = true,
+                 ValidateIssuerSigningKey = true,
+                 ValidIssuer = Configuration["Jwt:Issuer"],
+                 ValidAudience = Configuration["Jwt:Issuer"],
+                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+             };
+         });
             services.AddAuthorization(options =>
 {
-    options.AddPolicy("AdminOnly", policy => policy.RequireClaim("Admin", "SuperAdmin", "VisitAdmin"));
+    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Super Admin"));
 
 });
             //Second
@@ -86,8 +104,9 @@ namespace FilterDemoApp
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, ApplicationDbContext dbContext, UserManager<IdentityUser> userManager, IWebHostEnvironment env)
         {
+            LoadBaseInfo(dbContext, userManager);
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -98,7 +117,7 @@ namespace FilterDemoApp
             // app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -106,5 +125,25 @@ namespace FilterDemoApp
                 endpoints.MapControllers();
             });
         }
-           }
+
+        private void LoadBaseInfo(ApplicationDbContext dbContext, UserManager<IdentityUser> userManager)
+        {
+
+            var listRoles = Configuration
+                               .GetSection("ListRoles")
+                               .GetChildren()
+                               .Select(x => x.Value)
+                               .ToArray();
+
+
+            var section = Configuration.GetSection("userName");
+            var userName = section.Get<string>();
+
+            section = Configuration.GetSection("password");
+            var password = section.Get<string>();
+            dbContext.InitData(userName, password, listRoles, userManager);
+
+        }
+
+    }
 }

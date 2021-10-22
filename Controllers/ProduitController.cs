@@ -22,15 +22,9 @@ namespace FilterDemoApp.Controllers
     public class ProduitController : ControllerBase
     {
         private readonly ILogger<ProduitController> _logger;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly ApplicationDbContext _dbContext;
-        private readonly IConfiguration _configuration;
-        public ProduitController(ILogger<ProduitController> logger,UserManager<IdentityUser> userManager, ApplicationDbContext dbContext,IConfiguration configuration)
+        public ProduitController(ILogger<ProduitController> logger)
         {
             _logger = logger;
-            _userManager = userManager;
-            _dbContext = dbContext;
-            _configuration=configuration;
         }
         [HttpPost]
         public JsonResult Post([FromBody] Produit produit)
@@ -60,77 +54,19 @@ namespace FilterDemoApp.Controllers
         // => NoContent();
 
         [HttpGet]
-        // [Authorize(Policy="AdminOnly")]
-        public IActionResult Get([FromQuery]int id){
-            LoadBaseInfo();
-            return new JsonResult(new {id=id});
+        [Authorize]
+        // [Authorize(Roles = "Super Admin")]
+        // [Authorize(Policy = "AdminOnly")]
+
+        public IActionResult Get([FromQuery] int id)
+        {
+
+            return new JsonResult(new { id = id,user=new string[]{"Jaosn"} });
         }
         // [HttpGet("{id}.{format?}")]
         // public Produit Get(int id)=> new Produit{ Id = $"{id}" };
-        
 
 
-private void LoadBaseInfo()
-        {
 
-            var listRoles = _configuration
-                               .GetSection("ListRoles")
-                               .GetChildren()
-                               .Select(x => x.Value)
-                               .ToArray();
-
-
-            var section = _configuration.GetSection("userName");
-            var userName = section.Get<string>();
-
-            section = _configuration.GetSection("password");
-            var password = section.Get<string>();
-
-            try
-            {
-                var _ = _dbContext.Database.BeginTransactionAsync().Result;
-
-                foreach (var item in listRoles)
-                {
-                    var test = _dbContext.Roles.Any(role => role.Name == item);
-                    if (!test)
-                    {
-                        _dbContext.Roles.Add(new IdentityRole { Name = item, NormalizedName = item.Trim().ToUpper() });
-                    }
-
-
-                }
-                _dbContext.SaveChanges();
-
-                if (!_dbContext.Users.Any(u => u.UserName == userName))
-                {
-                    var currentUserSa = new IdentityUser { UserName = userName.Trim(), NormalizedUserName = userName.Trim().ToUpper() };
-                    var result = _userManager.CreateAsync(currentUserSa, password).Result;
-
-                    var currentRole = _dbContext.Roles.Where(x => x.Name == "Super Admin").FirstOrDefault() as IdentityRole;
-                    var currentUserRole = new IdentityUserRole<string> { RoleId = currentRole.Id, UserId = currentUserSa.Id };
-                    _dbContext.UserRoles.Add(currentUserRole);
-                    _dbContext.SaveChanges();
-                }
-                _dbContext.Database.CommitTransaction();
-            }
-            catch (Exception exp)
-            {
-                Console.WriteLine(exp.Message);
-
-                try
-                {
-                    _dbContext.Database.RollbackTransaction();
-
-                }
-                catch (Exception exp1)
-                {
-                    Console.WriteLine(exp1.Message);
-                }
-            }
-
-
-        }
- 
     }
 }
