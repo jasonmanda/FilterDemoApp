@@ -70,7 +70,7 @@ namespace FilterDemoApp.Controllers
             {
                 logInUser = new IdentityUser { UserName = "jasonmandabrandjai", Email = "jasonmandabrandja@gmail.com" };
             }
-
+  
             return logInUser;
         }
     }

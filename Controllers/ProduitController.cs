@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using FilterDemoApp.Data;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Security.Claims;
 
 namespace FilterDemoApp.Controllers
 {
@@ -22,9 +24,11 @@ namespace FilterDemoApp.Controllers
     public class ProduitController : ControllerBase
     {
         private readonly ILogger<ProduitController> _logger;
-        public ProduitController(ILogger<ProduitController> logger)
+        private readonly UserManager<IdentityUser> _userManager;
+        public ProduitController(ILogger<ProduitController> logger, UserManager<IdentityUser> userManager)
         {
             _logger = logger;
+            _userManager = userManager;
         }
         [HttpPost]
         public JsonResult Post([FromBody] Produit produit)
@@ -58,10 +62,12 @@ namespace FilterDemoApp.Controllers
         // [Authorize(Roles = "Super Admin")]
         // [Authorize(Policy = "AdminOnly")]
 
-        public IActionResult Get([FromQuery] int id)
+        public async Task<IActionResult> Get([FromQuery] int id)
         {
 
-            return new JsonResult(new { id = id,user=new string[]{"Jaosn"} });
+           var user = await _userManager.GetUserAsync(User);
+            var email = user?.Email;
+            return new JsonResult(new { Id=user?.UserName,UInt16=HttpContext.User.Identity.Name});
         }
         // [HttpGet("{id}.{format?}")]
         // public Produit Get(int id)=> new Produit{ Id = $"{id}" };

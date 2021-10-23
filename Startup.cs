@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.Security.Claims;
 
 namespace FilterDemoApp
 {
@@ -64,7 +65,7 @@ namespace FilterDemoApp
 
             services.AddAuthentication(options =>
             {
-                // options.RequireAuthenticatedSignIn = true;
+                options.RequireAuthenticatedSignIn = true;
             });
                       services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
@@ -82,7 +83,11 @@ namespace FilterDemoApp
          });
             services.AddAuthorization(options =>
 {
-    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Super Admin"));
+    options.AddPolicy("AdminOnly", policy =>{
+
+        //  policy.RequireRole("Super Admin");
+        policy.RequireClaim(ClaimTypes.Role);
+    });
 
 });
             //Second

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -39,9 +40,11 @@ namespace FilterDemoApp.Data
                     var currentUserSa = new IdentityUser { UserName = userName.Trim(), NormalizedUserName = userName.Trim().ToUpper(),EmailConfirmed=true };
                     var result = userManager.CreateAsync(currentUserSa, password).Result;
 
-                    var currentRole = this.Roles.Where(x => x.Name == "Super Admin").FirstOrDefault() as IdentityRole;
+                    var currentRole = this.Roles.Where(x => x.Name == "SuperAdmin").FirstOrDefault() as IdentityRole;
                     var currentUserRole = new IdentityUserRole<string> { RoleId = currentRole.Id, UserId = currentUserSa.Id };
                     this.UserRoles.Add(currentUserRole);
+                    userManager.AddClaimAsync(currentUserSa,new Claim(ClaimTypes.Role, currentRole.Name));
+                    
                     this.SaveChanges();
                 }
                 this.Database.CommitTransaction();
