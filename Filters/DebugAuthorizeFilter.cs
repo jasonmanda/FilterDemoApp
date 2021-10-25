@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using System;
 namespace FilterDemoApp.Filters
 {
-public class DebugAuthorizeFilter :Attribute, IAuthorizationFilter
+public class DebugAuthorizeFilter : IAuthorizationFilter//IAuthorizationFilter,Attribute
     {
         public void OnAuthorization(AuthorizationFilterContext context)
         {

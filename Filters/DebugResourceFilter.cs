@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace FilterDemoApp.Filters
 {
-    public class DebugResourceFilter : Attribute,IResourceFilter
+    public class DebugResourceFilter : IResourceFilter//IResourceFilter,Attribute
     {
         private readonly UserManager<IdentityUser> _userManager;
         public DebugResourceFilter(UserManager<IdentityUser> userManager){

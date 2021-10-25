@@ -105,6 +105,7 @@ namespace FilterDemoApp
                 options.Filters.Add(typeof(HttpsFilter));
                 options.Filters.Add(typeof(DebugResourceFilter));
                 options.Filters.Add(typeof(DebugActionFilter));
+                options.Filters.Add(typeof(DebugExceptionFilter));
                 //  options.Filters.Add(typeof(DebugResultFilter));
                 //  options.Filters.Add(new DebugResultFilter());
             });
@@ -126,7 +127,7 @@ namespace FilterDemoApp
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "FilterDemoApp v1"));
             }
-            app.UseStatusCodePagesWithRedirects("Error");
+            app.UseStatusCodePagesWithRedirects("/api/Error/{0}");
             // app.UseHttpsRedirection();
 
             app.UseRouting();

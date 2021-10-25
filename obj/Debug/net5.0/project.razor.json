@@ -15617,12 +15617,6 @@
     "CSharpLanguageVersion": 900
   },
   "RootNamespace": "FilterDemoApp",
-  "Documents": [
-    {
-      "FilePath": "/home/jason/Bureau/www/dotnet/FilterDemoApp/Views/Pages/Error.cshtml",
-      "TargetPath": "Views\\Pages\\Error.cshtml",
-      "FileKind": "mvc"
-    }
-  ],
+  "Documents": [],
   "SerializationFormat": "0.2"
 }

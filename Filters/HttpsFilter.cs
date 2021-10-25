@@ -8,7 +8,7 @@ namespace FilterDemoApp.Filters
 {
         // [RequireHttps(Permanent =false)] utilisez cet attribut qui fait la même chose en mieux pour gagner du temps
 
-    public class HttpsFilter : Attribute, IAuthorizationFilter
+    public class HttpsFilter : IAuthorizationFilter
     {
         private IWebHostEnvironment _env;
 

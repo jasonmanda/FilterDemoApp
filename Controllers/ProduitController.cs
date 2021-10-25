@@ -23,19 +23,20 @@ namespace FilterDemoApp.Controllers
     // [FormatFilter]
 
     // [DebugResultFilter("Author", "Jason Mandabrandja")] First
+    // [TypeFilter(typeof(DebugExceptionFilter))]
     public class ProduitController : ControllerBase
     {
         private readonly ILogger<ProduitController> _logger;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ApplicationDbContext _dbContext;
-        public ProduitController(ILogger<ProduitController> logger, UserManager<IdentityUser> userManager,IHttpContextAccessor httpContextAccessor,ApplicationDbContext dbContext)
+        public ProduitController(ILogger<ProduitController> logger, UserManager<IdentityUser> userManager, IHttpContextAccessor httpContextAccessor, ApplicationDbContext dbContext)
         {
             _logger = logger;
             _userManager = userManager;
             _httpContextAccessor = httpContextAccessor;
             _dbContext = dbContext;
-            
+
         }
         [HttpPost]
         public JsonResult Post([FromBody] Produit produit)
@@ -44,7 +45,6 @@ namespace FilterDemoApp.Controllers
             return new JsonResult(produit);
         }
         [HttpPut("{id:int}")]
-        // [ClaimRequirement(MyClaimTypes.Permission, "CanReadResource")]
         public IActionResult Put([FromRoute] string id, [FromBody] Produit produit)
         {
             if (!ModelState.IsValid) return BadRequest(produit);
@@ -68,13 +68,12 @@ namespace FilterDemoApp.Controllers
         [Authorize]
         // [Authorize(Roles = "SuperAdmin")]
         // [Authorize(Policy = "AdminOnly")]
-
         public async Task<IActionResult> Get([FromQuery] int id)
         {
-    var userId = _userManager.GetUserId(User); 
-  var user1 = _userManager.GetUserAsync(User).Result;
- var user2 = await _userManager.GetUserAsync(User);
-            return new JsonResult(new { User=user1,User1=user2});
+            var userId = _userManager.GetUserId(User);
+            var user1 = _userManager.GetUserAsync(User).Result;
+            var user2 = await _userManager.GetUserAsync(User);
+            return new JsonResult(new { User = user1, User1 = user2 });
         }
         // [HttpGet("{id}.{format?}")]
         // public Produit Get(int id)=> new Produit{ Id = $"{id}" };
