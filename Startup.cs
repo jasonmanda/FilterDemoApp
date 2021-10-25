@@ -67,26 +67,27 @@ namespace FilterDemoApp
             {
                 options.RequireAuthenticatedSignIn = true;
             });
-                      services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options =>
-         {
-             options.TokenValidationParameters = new TokenValidationParameters
-             {
-                 ValidateIssuer = true,
-                 ValidateAudience = true,
-                 ValidateLifetime = true,
-                 ValidateIssuerSigningKey = true,
-                 ValidIssuer = Configuration["Jwt:Issuer"],
-                 ValidAudience = Configuration["Jwt:Issuer"],
-                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
-             };
-         });
-         services.AddHttpContextAccessor();
-        //    services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+  .AddJwtBearer(options =>
+{
+   options.TokenValidationParameters = new TokenValidationParameters
+   {
+       ValidateIssuer = true,
+       ValidateAudience = true,
+       ValidateLifetime = true,
+       ValidateIssuerSigningKey = true,
+       ValidIssuer = Configuration["Jwt:Issuer"],
+       ValidAudience = Configuration["Jwt:Issuer"],
+       IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+   };
+});
+            services.AddHttpContextAccessor();
+            //    services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddAuthorization(options =>
 {
-    options.AddPolicy("AdminOnly", policy =>{
+    options.AddPolicy("AdminOnly", policy =>
+    {
 
         //  policy.RequireRole("Super Admin");
         policy.RequireClaim(ClaimTypes.Role);
@@ -94,22 +95,24 @@ namespace FilterDemoApp
 
 });
             //Second
-            services.AddSingleton<DebugResultFilter>();
-            // services.AddScoped<DebugResultFilter>();
-            services.AddSingleton<HttpsFilter>();
+            // services.AddSingleton<DebugResultFilter>();
+            // services.AddScoped<DebugActionFilter>();
+            // services.AddSingleton<HttpsFilter>();
+            //Second
+
 
             services.AddControllers(options =>
             {
-                options.Filters.Add<DebugResultFilter>();
-                options.Filters.Add<DebugAuthorizeFilter>();
-                options.Filters.Add(typeof(HttpsFilter));
-                options.Filters.Add(typeof(DebugResourceFilter));
+                // options.Filters.Add<DebugResultFilter>();
+                // options.Filters.Add<DebugAuthorizeFilter>();
+                // options.Filters.Add(typeof(HttpsFilter));
+                // options.Filters.Add(typeof(DebugResourceFilter));
                 options.Filters.Add(typeof(DebugActionFilter));
-                options.Filters.Add(typeof(DebugExceptionFilter));
+                // options.Filters.Add(typeof(DebugExceptionFilter));
                 //  options.Filters.Add(typeof(DebugResultFilter));
                 //  options.Filters.Add(new DebugResultFilter());
             });
-            //Second
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "FilterDemoApp", Version = "v1" });
