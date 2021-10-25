@@ -17,7 +17,7 @@ namespace FilterDemoApp.Filters
         {
             if (!_env.IsDevelopment())
                 if (!context.HttpContext.Request.IsHttps)
-                    context.Result = new ForbidResult();
+                    context.Result = new ForbidResult("Pas de https");
 
 
         }

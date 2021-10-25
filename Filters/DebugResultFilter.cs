@@ -2,13 +2,13 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace FilterDemoApp.Filters
 {
-    public class AuthorFilter : ResultFilterAttribute
+    public class DebugResultFilter : ResultFilterAttribute
     {
         //First
         // private readonly string _name;
         // private readonly string _value;
 
-        // public AuthorFilter(string name, string value)
+        // public DebugResultFilter(string name, string value)
         // {
         //     _name = name;
         //     _value = value;

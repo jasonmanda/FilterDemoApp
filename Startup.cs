@@ -81,6 +81,9 @@ namespace FilterDemoApp
                  IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
              };
          });
+         services.AddHttpContextAccessor();
+        //    services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
             services.AddAuthorization(options =>
 {
     options.AddPolicy("AdminOnly", policy =>{
@@ -91,21 +94,26 @@ namespace FilterDemoApp
 
 });
             //Second
-            services.AddScoped<AuthorFilter>();
+            services.AddSingleton<DebugResultFilter>();
+            // services.AddScoped<DebugResultFilter>();
             services.AddSingleton<HttpsFilter>();
 
             services.AddControllers(options =>
             {
-                options.Filters.Add<AuthorFilter>();
+                options.Filters.Add<DebugResultFilter>();
+                options.Filters.Add<DebugAuthorizeFilter>();
                 options.Filters.Add(typeof(HttpsFilter));
-                //  options.Filters.Add(typeof(AuthorFilter));
-                //  options.Filters.Add(new AuthorFilter());
+                options.Filters.Add(typeof(DebugResourceFilter));
+                options.Filters.Add(typeof(DebugActionFilter));
+                //  options.Filters.Add(typeof(DebugResultFilter));
+                //  options.Filters.Add(new DebugResultFilter());
             });
             //Second
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "FilterDemoApp", Version = "v1" });
             });
+            services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -118,7 +126,7 @@ namespace FilterDemoApp
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "FilterDemoApp v1"));
             }
-
+            app.UseStatusCodePagesWithRedirects("Error");
             // app.UseHttpsRedirection();
 
             app.UseRouting();

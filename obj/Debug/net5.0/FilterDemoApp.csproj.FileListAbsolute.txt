@@ -72,3 +72,14 @@
 /home/jason/Bureau/www/dotnet/FilterDemoApp/bin/Debug/net5.0/Microsoft.IdentityModel.Tokens.dll
 /home/jason/Bureau/www/dotnet/FilterDemoApp/bin/Debug/net5.0/System.IdentityModel.Tokens.Jwt.dll
 /home/jason/Bureau/www/dotnet/FilterDemoApp/bin/Debug/net5.0/app.db
+/home/jason/Bureau/www/dotnet/FilterDemoApp/bin/Debug/net5.0/FilterDemoApp.Views.dll
+/home/jason/Bureau/www/dotnet/FilterDemoApp/bin/Debug/net5.0/FilterDemoApp.Views.pdb
+/home/jason/Bureau/www/dotnet/FilterDemoApp/obj/Debug/net5.0/FilterDemoApp.RazorAssemblyInfo.cache
+/home/jason/Bureau/www/dotnet/FilterDemoApp/obj/Debug/net5.0/FilterDemoApp.RazorAssemblyInfo.cs
+/home/jason/Bureau/www/dotnet/FilterDemoApp/obj/Debug/net5.0/FilterDemoApp.TagHelpers.input.cache
+/home/jason/Bureau/www/dotnet/FilterDemoApp/obj/Debug/net5.0/FilterDemoApp.TagHelpers.output.cache
+/home/jason/Bureau/www/dotnet/FilterDemoApp/obj/Debug/net5.0/FilterDemoApp.RazorCoreGenerate.cache
+/home/jason/Bureau/www/dotnet/FilterDemoApp/obj/Debug/net5.0/Razor/Views/Pages/Error.cshtml.g.cs
+/home/jason/Bureau/www/dotnet/FilterDemoApp/obj/Debug/net5.0/FilterDemoApp.RazorTargetAssemblyInfo.cs
+/home/jason/Bureau/www/dotnet/FilterDemoApp/obj/Debug/net5.0/FilterDemoApp.Views.pdb
+/home/jason/Bureau/www/dotnet/FilterDemoApp/obj/Debug/net5.0/FilterDemoApp.csproj.CopyComplete

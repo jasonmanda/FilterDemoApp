@@ -13,6 +13,8 @@ using FilterDemoApp.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 namespace FilterDemoApp.Controllers
 {
@@ -20,15 +22,20 @@ namespace FilterDemoApp.Controllers
     [Route("[controller]")]
     // [FormatFilter]
 
-    // [AuthorFilter("Author", "Jason Mandabrandja")] First
+    // [DebugResultFilter("Author", "Jason Mandabrandja")] First
     public class ProduitController : ControllerBase
     {
         private readonly ILogger<ProduitController> _logger;
         private readonly UserManager<IdentityUser> _userManager;
-        public ProduitController(ILogger<ProduitController> logger, UserManager<IdentityUser> userManager)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly ApplicationDbContext _dbContext;
+        public ProduitController(ILogger<ProduitController> logger, UserManager<IdentityUser> userManager,IHttpContextAccessor httpContextAccessor,ApplicationDbContext dbContext)
         {
             _logger = logger;
             _userManager = userManager;
+            _httpContextAccessor = httpContextAccessor;
+            _dbContext = dbContext;
+            
         }
         [HttpPost]
         public JsonResult Post([FromBody] Produit produit)
@@ -53,21 +60,21 @@ namespace FilterDemoApp.Controllers
             return new JsonResult(id);
         }
         // [HttpGet]
-        // // [AuthorFilter("Author", "Jason Mandabrandja")] First
+        // // [DebugResultFilter("Author", "Jason Mandabrandja")] First
         // public IActionResult Get()
         // => NoContent();
 
         [HttpGet]
         [Authorize]
-        // [Authorize(Roles = "Super Admin")]
+        // [Authorize(Roles = "SuperAdmin")]
         // [Authorize(Policy = "AdminOnly")]
 
         public async Task<IActionResult> Get([FromQuery] int id)
         {
-
-           var user = await _userManager.GetUserAsync(User);
-            var email = user?.Email;
-            return new JsonResult(new { Id=user?.UserName,UInt16=HttpContext.User.Identity.Name});
+    var userId = _userManager.GetUserId(User); 
+  var user1 = _userManager.GetUserAsync(User).Result;
+ var user2 = await _userManager.GetUserAsync(User);
+            return new JsonResult(new { User=user1,User1=user2});
         }
         // [HttpGet("{id}.{format?}")]
         // public Produit Get(int id)=> new Produit{ Id = $"{id}" };
