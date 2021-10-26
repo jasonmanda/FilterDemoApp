@@ -39,8 +39,11 @@ namespace FilterDemoApp.Controllers
 
         }
         [HttpPost]
+        [ServiceFilter(typeof(DebugActionFilter))]
+        // [ServiceFilter(typeof(DebugActionFilter))]
         public JsonResult Post([FromBody] Produit produit)
         {
+            throw new Exception("Failed");
             _logger.LogInformation("{0}", JsonSerializer.Serialize(produit));
             return new JsonResult(produit);
         }
@@ -65,8 +68,7 @@ namespace FilterDemoApp.Controllers
         // => NoContent();
 
         [HttpGet]
-        [Authorize]
-        [ServiceFilter(typeof(DebugResultFilter))]
+        [ServiceFilter(typeof(DebugAuthorizeFilter))]
         // [Authorize(Roles = "SuperAdmin")]
         // [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> Get([FromQuery] int id)

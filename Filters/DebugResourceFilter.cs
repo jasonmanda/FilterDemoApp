@@ -12,14 +12,14 @@ namespace FilterDemoApp.Filters
         }
         public void OnResourceExecuted(ResourceExecutedContext context)
         {
-           Console.WriteLine($"{context.ActionDescriptor.DisplayName}");
+        //    Console.WriteLine($"{context.ActionDescriptor.DisplayName}");
         }
 
-        public async void OnResourceExecuting(ResourceExecutingContext context)
+        public  void OnResourceExecuting(ResourceExecutingContext context)
         {
-            var user=await _userManager.GetUserAsync(context.HttpContext.User);
-            Console.WriteLine($"{user}");
-           Console.WriteLine($"{context.ActionDescriptor.DisplayName}");
+            // var user=await _userManager.GetUserAsync(context.HttpContext.User);
+            // Console.WriteLine($"{user}");
+        //    Console.WriteLine($"{context.ActionDescriptor.DisplayName}");
         }
 
    

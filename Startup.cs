@@ -96,7 +96,8 @@ namespace FilterDemoApp
 });
             //Second
             // services.AddSingleton<DebugResultFilter>();
-            // services.AddScoped<DebugActionFilter>();
+            services.AddScoped<DebugActionFilter>();
+            services.AddScoped<DebugAuthorizeFilter>();
             // services.AddSingleton<HttpsFilter>();
             //Second
 
@@ -107,7 +108,7 @@ namespace FilterDemoApp
                 // options.Filters.Add<DebugAuthorizeFilter>();
                 // options.Filters.Add(typeof(HttpsFilter));
                 // options.Filters.Add(typeof(DebugResourceFilter));
-                options.Filters.Add(typeof(DebugActionFilter));
+                options.Filters.Add(typeof(DebugExceptionFilter));
                 // options.Filters.Add(typeof(DebugExceptionFilter));
                 //  options.Filters.Add(typeof(DebugResultFilter));
                 //  options.Filters.Add(new DebugResultFilter());

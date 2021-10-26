@@ -18,7 +18,7 @@ namespace FilterDemoApp.Filters
         }
         public override void OnActionExecuted(ActionExecutedContext context)
         {
-            Console.WriteLine($"[Action filter] {context.ActionDescriptor.DisplayName}");
+            // Console.WriteLine($"[Action filter] {context.ActionDescriptor.DisplayName}");
 
         }
         public override void OnActionExecuting(ActionExecutingContext context)
