@@ -23,7 +23,6 @@ namespace FilterDemoApp.Filters
         }
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-
             var param = context.ActionArguments.SingleOrDefault(p => p.Value is Produit);
             var entity = param.Value as Produit;
             if (entity == null)

@@ -69,7 +69,7 @@ namespace FilterDemoApp.Controllers
 
         [HttpGet]
         [ServiceFilter(typeof(DebugAuthorizeFilter))]
-        // [Authorize(Roles = "SuperAdmin")]
+        // [Authorize(Roles = "SuperAdmin, SUPERADMIN")]
         // [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> Get([FromQuery] int id)
         {
